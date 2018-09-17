@@ -1,5 +1,6 @@
 package com.liuruichao.connection.pool.test;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -12,6 +13,9 @@ import org.apache.ibatis.annotations.Select;
  */
 @Mapper
 public interface CityMapper {
-    @Select("select * from city where state = #{state}")
-    City findByState(@Param("state") String state);
+    @Select("select * from city where name=#{name}")
+    City findByName(@Param("name") String name);
+
+    @Insert("insert into city(name) value(#{name})")
+    void insert(City city);
 }

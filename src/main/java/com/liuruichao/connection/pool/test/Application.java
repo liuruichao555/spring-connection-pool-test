@@ -19,10 +19,10 @@ public class Application implements CommandLineRunner {
     }
 
     @Resource
-    private CityMapper cityMapper;
+    private CityService cityService;
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println(this.cityMapper.findByState("CA"));
+        cityService.addTestData();
     }
 }
