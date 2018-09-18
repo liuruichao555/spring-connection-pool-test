@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liuruichao.connection.pool.test.CityMapper">
+
+    <!--<resultMap id="BaseResultMap" type="com.fittime.health.model.RiskControl">
+        <result column="user_id" jdbcType="BIGINT" property="userId" />
+        <result column="totalCount" jdbcType="BIGINT" property="totalCount" />
+        <result column="sceneName"  jdbcType="BIGINT" property="sceneName" />
+    </resultMap>-->
+
+    <insert id="insert" parameterType="java.util.List">
+        INSERT INTO city(name) VALUES
+        <foreach collection="list" item="item" separator="," index="index">
+          (#{item.name})
+        </foreach>
+    </insert>
+
+    <update id="updateTodayTotalSteps">
+        update tb_health_user set today_total_steps=0, today_availabel_steps=0;
+    </update>
+
+</mapper>
+
