@@ -15,4 +15,6 @@ import java.util.List;
  */
 public interface CityMapper {
     void insert(List<City> list);
+
+    List<City> list();
 }

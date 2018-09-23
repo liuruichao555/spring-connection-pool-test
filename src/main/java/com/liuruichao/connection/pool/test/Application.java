@@ -5,8 +5,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Application
@@ -17,7 +20,9 @@ import javax.annotation.Resource;
 @SpringBootApplication
 @MapperScan(basePackages = "com.liuruichao.connection.pool.test")
 @EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true)
-public class Application implements CommandLineRunner {
+@RestController
+public class Application {
+//public class Application implements CommandLineRunner {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
@@ -25,8 +30,13 @@ public class Application implements CommandLineRunner {
     @Resource
     private CityService cityService;
 
-    @Override
+    @GetMapping("/")
+    public List<City> list() {
+        return cityService.list();
+    }
+
+    /*@Override
     public void run(String... args) throws Exception {
         cityService.addTestData();
-    }
+    }*/
 }

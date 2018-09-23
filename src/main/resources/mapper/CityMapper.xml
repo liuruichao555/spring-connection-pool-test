@@ -9,15 +9,14 @@
     </resultMap>-->
 
     <insert id="insert" parameterType="java.util.List">
-        INSERT INTO city(name) VALUES
+        INSERT INTO CITY(name) VALUES
         <foreach collection="list" item="item" separator="," index="index">
           (#{item.name})
         </foreach>
     </insert>
 
-    <update id="updateTodayTotalSteps">
-        update tb_health_user set today_total_steps=0, today_availabel_steps=0;
-    </update>
-
+    <select id="list" resultType="com.liuruichao.connection.pool.test.City">
+        SELECT * FROM CITY limit 10
+    </select>
 </mapper>
 

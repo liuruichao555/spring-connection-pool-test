@@ -21,6 +21,10 @@ public class CityService {
     @Resource
     private CityMapper cityMapper;
 
+    public List<City> list() {
+        return cityMapper.list();
+    }
+
     public void addTestData() {
         City city = null;
         List<City> list = new ArrayList<>(1000);
