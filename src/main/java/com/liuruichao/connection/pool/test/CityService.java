@@ -1,5 +1,6 @@
 package com.liuruichao.connection.pool.test;
 
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * CityService
@@ -27,16 +29,25 @@ public class CityService {
 
     public void addTestData() {
         City city = null;
-        List<City> list = new ArrayList<>(1000);
-        for (int i = 0; i < 500000000; i++) {
+        List<City> list = Lists.newArrayListWithCapacity(10000);
+        int totalRecords = 500000;
+        Random random = new Random();
+        for (int i = 0; i < totalRecords; i++) {
             city = new City();
             city.setName("test_" + i);
+            city.setProvincesId(random.nextInt(30));
+            city.setAliasName("test_alias_" + i);
             list.add(city);
-            if (list.size() == 1000) {
+            if (list.size() == 10000) {
                 CityService targetService = ((CityService) AopContext.currentProxy());
                 targetService.addTestData(list);
                 list.clear();
             }
+        }
+
+        if (list.size() > 0) {
+            CityService targetService = ((CityService) AopContext.currentProxy());
+            targetService.addTestData(list);
         }
     }
 
