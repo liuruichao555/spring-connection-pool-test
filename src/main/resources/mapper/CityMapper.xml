@@ -9,9 +9,9 @@
     </resultMap>-->
 
     <insert id="insert" parameterType="java.util.List">
-        INSERT INTO CITY(name, alias_name, provinces_id) VALUES
+        INSERT INTO CITY(name, alias_name, provinces_id, score1, score2) VALUES
         <foreach collection="list" item="item" separator="," index="index">
-          (#{item.name}, #{item.aliasName}, #{item.provincesId})
+          (#{item.name}, #{item.aliasName}, #{item.provincesId}, #{item.score1}, #{item.score2})
         </foreach>
     </insert>
 

@@ -21,8 +21,7 @@ import java.util.List;
 @MapperScan(basePackages = "com.liuruichao.connection.pool.test")
 @EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true)
 @RestController
-public class Application {
-//public class Application implements CommandLineRunner {
+public class Application implements CommandLineRunner {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
@@ -35,8 +34,8 @@ public class Application {
         return cityService.list();
     }
 
-    /*@Override
+    @Override
     public void run(String... args) throws Exception {
         cityService.addTestData();
-    }*/
+    }
 }

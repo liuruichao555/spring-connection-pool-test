@@ -22,6 +22,12 @@ public class City {
     /** 省份ID */
     private Integer provincesId;
 
+    /** 得分1 */
+    private Integer score1;
+
+    /** 得分2 */
+    private Integer score2;
+
     /** 是否删除 */
     private Integer isDelete = 0;
 }

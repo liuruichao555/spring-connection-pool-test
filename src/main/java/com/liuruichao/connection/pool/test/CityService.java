@@ -10,6 +10,8 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.*;
+import java.util.function.Consumer;
 
 /**
  * CityService
@@ -28,27 +30,51 @@ public class CityService {
     }
 
     public void addTestData() {
-        City city = null;
-        List<City> list = Lists.newArrayListWithCapacity(10000);
-        int totalRecords = 500000;
-        Random random = new Random();
-        for (int i = 0; i < totalRecords; i++) {
-            city = new City();
-            city.setName("test_" + i);
-            city.setProvincesId(random.nextInt(30));
-            city.setAliasName("test_alias_" + i);
-            list.add(city);
-            if (list.size() == 10000) {
-                CityService targetService = ((CityService) AopContext.currentProxy());
-                targetService.addTestData(list);
-                list.clear();
-            }
+        ExecutorService executors = Executors.newFixedThreadPool(5);
+        List<Future<Boolean>> futures = Lists.newArrayListWithCapacity(5);
+        CityService targetService = ((CityService) AopContext.currentProxy());
+
+        for (int j = 0; j < 5; j++) {
+            Future<Boolean> future = executors.submit(() -> {
+                Random random = new Random(System.currentTimeMillis());
+                City city = null;
+                List<City> list = Lists.newArrayListWithCapacity(10000);
+                long totalRecords = 1000000000L;
+                for (long i = 0; i < totalRecords; i++) {
+                    city = new City();
+                    city.setName("test_" + i);
+                    city.setProvincesId(random.nextInt(30));
+                    city.setAliasName("alias_" + i);
+                    city.setScore1(random.nextInt(100));
+                    city.setScore2(random.nextInt(100));
+                    list.add(city);
+                    if (list.size() == 10000) {
+                        targetService.addTestData(list);
+                        list.clear();
+                    }
+                }
+
+                if (list.size() > 0) {
+                    targetService.addTestData(list);
+                }
+
+                return true;
+            });
+
+            futures.add(future);
         }
 
-        if (list.size() > 0) {
-            CityService targetService = ((CityService) AopContext.currentProxy());
-            targetService.addTestData(list);
-        }
+        futures.forEach(booleanFuture -> {
+            try {
+                if (booleanFuture.get()) {
+                    System.out.println("success");
+                } else {
+                    System.out.println("fail");
+                }
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Transactional(rollbackFor = Exception.class)
