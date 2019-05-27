@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.*;
@@ -27,6 +28,10 @@ public class CityService {
 
     public List<City> list() {
         return cityMapper.list();
+    }
+
+    public List<City> queryByNames(Collection<String> names) {
+        return cityMapper.selectByNames(names);
     }
 
     public void addTestData() {

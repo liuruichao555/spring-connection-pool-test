@@ -18,5 +18,16 @@
     <select id="list" resultType="com.liuruichao.connection.pool.test.City">
         SELECT * FROM CITY limit 10
     </select>
+
+    <select id="selectByNames" resultType="com.liuruichao.connection.pool.test.City">
+        SELECT * FROM CITY
+        WHERE 1 = 1
+        <if test="names != null and names.size() > 0">
+            AND `name` IN
+            <foreach collection="names" separator="," open="(" close=")" item="name">
+                #{name}
+            </foreach>
+        </if>
+    </select>
 </mapper>
 

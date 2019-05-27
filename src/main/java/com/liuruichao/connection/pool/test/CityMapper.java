@@ -5,7 +5,9 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * CityMapper
@@ -17,4 +19,6 @@ public interface CityMapper {
     void insert(List<City> list);
 
     List<City> list();
+
+    List<City> selectByNames(@Param("names") Collection<String> names);
 }

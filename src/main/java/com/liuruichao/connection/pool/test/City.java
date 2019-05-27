@@ -1,6 +1,8 @@
 package com.liuruichao.connection.pool.test;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * City
@@ -9,6 +11,8 @@ import lombok.Data;
  * Created on 2018/9/14 18:27
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class City {
     /** 城市ID */
     private Long id;
