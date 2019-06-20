@@ -92,6 +92,8 @@ public class CityService {
     }
 
     public void addTestTransactional(List<City> list) {
+        // 当前有事务就获取当前事务，如果没有，新开一个事务
+        // 加上@Transactional注解就是有事务(获取当前事务)，不加@Transactional注解就没有事务(会新开一个事务)
         TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());
         try {
             cityMapper.insert(list);
