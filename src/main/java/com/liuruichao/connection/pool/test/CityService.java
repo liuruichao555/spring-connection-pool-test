@@ -4,15 +4,16 @@ import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * CityService
@@ -25,6 +26,9 @@ import java.util.function.Consumer;
 public class CityService {
     @Resource
     private CityMapper cityMapper;
+
+    @Resource
+    private PlatformTransactionManager transactionManager;
 
     public List<City> list() {
         return cityMapper.list();
@@ -85,5 +89,16 @@ public class CityService {
     @Transactional(rollbackFor = Exception.class)
     public void addTestData(List<City> list) {
         cityMapper.insert(list);
+    }
+
+    public void addTestTransactional(List<City> list) {
+        TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());
+        try {
+            cityMapper.insert(list);
+            int a = 1 / 0;
+        } catch (Exception e) {
+            log.error("addTestTransactional error!", e);
+            transactionManager.rollback(status);
+        }
     }
 }

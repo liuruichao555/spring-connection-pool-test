@@ -51,4 +51,16 @@ public class CityServiceTest {
     public void testQueryByNames() {
         cityService.queryByNames(Lists.newArrayList());
     }
+
+    @Test
+    public void testTransactional() {
+        City city = new City();
+        city.setName("hehe");
+        city.setAliasName("hh");
+        city.setProvincesId(5);
+        city.setScore1(50);
+        city.setScore2(60);
+
+        cityService.addTestTransactional(Lists.newArrayList(city));
+    }
 }
