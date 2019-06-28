@@ -34,6 +34,11 @@ public class Application {
         return cityService.list();
     }
 
+    @GetMapping("/hello")
+    public String hello() {
+        return "hello";
+    }
+
     /*@Override
     public void run(String... args) throws Exception {
         cityService.addTestData();
