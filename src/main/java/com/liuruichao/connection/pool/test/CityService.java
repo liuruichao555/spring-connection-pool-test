@@ -42,6 +42,7 @@ public class CityService {
 
     @Transactional(rollbackFor = Exception.class)
     public void addTestData(List<City> list) {
+        log.debug("list size: {}", list.size());
         cityMapper.insert(list);
     }
 }
