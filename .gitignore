@@ -1,8 +1,8 @@
-/target
-/.settings/
-/.project
+target
+.settings
+.project
 
-/.idea
+.idea
 *.iml
 *.log
 .factorypath
