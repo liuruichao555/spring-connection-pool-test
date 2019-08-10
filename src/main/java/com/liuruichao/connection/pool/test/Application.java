@@ -26,11 +26,18 @@ public class Application {
         SpringApplication.run(Application.class, args);
     }
 
+    private int count = 0;
+
     @Resource
     private CityService cityService;
 
     @GetMapping("/")
     public List<City> list() {
         return cityService.list();
+    }
+
+    @GetMapping("/count")
+    public int count() {
+        return count++;
     }
 }
