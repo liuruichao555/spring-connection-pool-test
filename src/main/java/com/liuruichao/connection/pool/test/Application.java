@@ -1,6 +1,8 @@
 package com.liuruichao.connection.pool.test;
 
+import com.liuruichao.connection.pool.test.jsontest.JsonTestService;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -21,7 +23,6 @@ import java.util.List;
 @EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true)
 @RestController
 public class Application {
-//public class Application implements CommandLineRunner {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
@@ -29,18 +30,17 @@ public class Application {
     @Resource
     private CityService cityService;
 
+    @Resource
+    private JsonTestService jsonTestService;
+
     @GetMapping("/")
-    public List<City> list() {
-        return cityService.list();
+    public String list() {
+        jsonTestService.addTestData();
+        return "hello";
     }
 
     @GetMapping("/hello")
     public String hello() {
         return "hello";
     }
-
-    /*@Override
-    public void run(String... args) throws Exception {
-        cityService.addTestData();
-    }*/
 }
