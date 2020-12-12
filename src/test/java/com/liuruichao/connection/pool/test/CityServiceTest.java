@@ -1,5 +1,6 @@
 package com.liuruichao.connection.pool.test;
 
+import com.google.common.collect.Iterables;
 import lombok.extern.log4j.Log4j2;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
@@ -10,6 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.*;
 
 /**
  * CityServiceTest
@@ -30,21 +32,43 @@ public class CityServiceTest {
     }
 
     @Test
-    public void testAddData2() {
-        List<City> cities = Lists.newArrayList();
-
+    public void testAddData2() throws ExecutionException, InterruptedException {
+        ExecutorService executor = Executors.newFixedThreadPool(4);
         Random random = new Random();
-        for (int i = 0; i < 10; i++) {
-            City city = new City();
-            city.setName("test_" + i);
-            city.setProvincesId(random.nextInt(30));
-            city.setAliasName("alias_" + i);
-            city.setScore1(random.nextInt(100));
-            city.setScore2(random.nextInt(100));
-            city.setIsDelete(0);
-            cities.add(city);
+
+        Callable<Boolean> task = () -> {
+            for (int j = 0; j < 100000; j++) {
+                List<City> cities = Lists.newArrayList();
+
+                for (int i = 0; i < 10000; i++) {
+                    City city = new City();
+                    city.setName("test_" + i);
+                    city.setProvincesId(random.nextInt(30));
+                    city.setAliasName("alias_" + i);
+                    city.setScore1(random.nextInt(100));
+                    city.setScore2(random.nextInt(100));
+                    city.setIsDelete(0);
+                    cities.add(city);
+                }
+                cityService.addTestData(cities);
+
+                City last = Iterables.getLast(cities);
+                System.out.println("batch insert size: " + cities.size()
+                        + ", thread name: " + Thread.currentThread().getName() + ", last city id: " + last.getId());
+            }
+
+            return true;
+        };
+
+        List<Future<Boolean>> futures = Lists.newArrayList();
+        futures.add(executor.submit(task));
+        futures.add(executor.submit(task));
+        futures.add(executor.submit(task));
+        futures.add(executor.submit(task));
+
+        for (Future<Boolean> future : futures) {
+            future.get();
         }
-        cityService.addTestData(cities);
     }
 
     @Test
