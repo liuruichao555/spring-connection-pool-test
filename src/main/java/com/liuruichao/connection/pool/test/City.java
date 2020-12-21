@@ -34,4 +34,6 @@ public class City {
 
     /** 是否删除 */
     private Integer isDelete = 0;
+
+    private Integer age;
 }
